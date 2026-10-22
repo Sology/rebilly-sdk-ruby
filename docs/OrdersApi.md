@@ -12,7 +12,7 @@ Method | HTTP request | Description
 [**get_subscription_collection**](OrdersApi.md#get_subscription_collection) | **GET** /subscriptions | Retrieve a list of orders
 [**get_subscription_reactivation**](OrdersApi.md#get_subscription_reactivation) | **GET** /subscription-reactivations/{id} | Retrieve an order reactivation
 [**get_subscription_reactivation_collection**](OrdersApi.md#get_subscription_reactivation_collection) | **GET** /subscription-reactivations | Retrieve a list of reactivations
-[**get_subscription_upcoming_invoice_collection**](OrdersApi.md#get_subscription_upcoming_invoice_collection) | **GET** /subscriptions/{id}/upcoming-invoices | Retrieve subscription order&#x27;s upcoming invoice
+[**get_subscription_upcoming_invoice**](OrdersApi.md#get_subscription_upcoming_invoice) | **GET** /subscriptions/{id}/upcoming-invoice | Retrieve an upcoming subscription order invoice
 [**post_preview_order**](OrdersApi.md#post_preview_order) | **POST** /previews/orders | Preview an order
 [**post_subscription**](OrdersApi.md#post_subscription) | **POST** /subscriptions | Create an order
 [**post_subscription_cancellation**](OrdersApi.md#post_subscription_cancellation) | **POST** /subscription-cancellations | Cancel an order
@@ -20,7 +20,7 @@ Method | HTTP request | Description
 [**post_subscription_items_change**](OrdersApi.md#post_subscription_items_change) | **POST** /subscriptions/{id}/change-items | Change an order&#x27;s items
 [**post_subscription_reactivation**](OrdersApi.md#post_subscription_reactivation) | **POST** /subscription-reactivations | Reactivate an order
 [**post_subscription_void**](OrdersApi.md#post_subscription_void) | **POST** /subscriptions/{id}/void | Void an order
-[**post_upcoming_invoice_issuance**](OrdersApi.md#post_upcoming_invoice_issuance) | **POST** /subscriptions/{id}/upcoming-invoices/{invoiceId}/issue | Issue an upcoming invoice for early pay
+[**post_subscription_upcoming_invoice_issuance**](OrdersApi.md#post_subscription_upcoming_invoice_issuance) | **POST** /subscriptions/{id}/upcoming-invoice/issue | Issue an upcoming invoice for early pay
 [**put_subscription**](OrdersApi.md#put_subscription) | **PUT** /subscriptions/{id} | Upsert an order with predefined ID
 [**put_subscription_cancellation**](OrdersApi.md#put_subscription_cancellation) | **PUT** /subscription-cancellations/{id} | Cancel an order
 
@@ -504,12 +504,12 @@ Name | Type | Description  | Notes
 
 
 
-# **get_subscription_upcoming_invoice_collection**
-> Array&lt;Invoice&gt; get_subscription_upcoming_invoice_collection(id, opts)
+# **get_subscription_upcoming_invoice**
+> Invoice get_subscription_upcoming_invoice(id, opts)
 
-Retrieve subscription order's upcoming invoice
+Retrieve an upcoming subscription order invoice
 
-Retrieve an upcoming invoice from the specified subscription order. The endpoint is temporary before upcoming invoices get a complete integration. 
+Retrieves an upcoming invoice for a specified subscription order. An upcoming invoice is an invoice that has not been issued. It functions as a preview of the next invoice for the order.
 
 ### Example
 ```ruby
@@ -526,17 +526,17 @@ end
 
 api_instance = RebillySdk::OrdersApi.new
 id = 'id_example' # String | The resource identifier string.
-opts = { 
+opts = {
   organization_id: RebillySdk::ResourceId.new, # ResourceId | Organization identifier in scope of which need to perform request (if not specified, the default organization will be used).  It is deprecated. Use servers with `/organizations/{organizationId}` base path instead.
-  expand: 'expand_example' # String | Expand a response to get a full related object included inside of the `_embedded` path in the response. It accepts a comma-separated list of objects to expand. See the [expand guide](https://api-reference.rebilly.com/#section/Expand-to-include-embedded-objects) for more info. 
+  expand: 'expand_example' # String | Expand a response to get a full related object included inside of the `_embedded` path in the response. It accepts a comma-separated list of objects to expand. See the [expand guide](https://api-reference.rebilly.com/#section/Expand-to-include-embedded-objects) for more info.
 }
 
 begin
-  #Retrieve subscription order's upcoming invoice
-  result = api_instance.get_subscription_upcoming_invoice_collection(id, opts)
+  #Retrieve an upcoming subscription order invoice
+  result = api_instance.get_subscription_upcoming_invoice(id, opts)
   p result
 rescue RebillySdk::ApiError => e
-  puts "Exception when calling OrdersApi->get_subscription_upcoming_invoice_collection: #{e}"
+  puts "Exception when calling OrdersApi->get_subscription_upcoming_invoice: #{e}"
 end
 ```
 
@@ -544,13 +544,13 @@ end
 
 Name | Type | Description  | Notes
 ------------- | ------------- | ------------- | -------------
- **id** | **String**| The resource identifier string. | 
- **organization_id** | [**ResourceId**](.md)| Organization identifier in scope of which need to perform request (if not specified, the default organization will be used).  It is deprecated. Use servers with &#x60;/organizations/{organizationId}&#x60; base path instead. | [optional] 
- **expand** | **String**| Expand a response to get a full related object included inside of the &#x60;_embedded&#x60; path in the response. It accepts a comma-separated list of objects to expand. See the [expand guide](https://api-reference.rebilly.com/#section/Expand-to-include-embedded-objects) for more info.  | [optional] 
+ **id** | **String**| The resource identifier string. |
+ **organization_id** | [**ResourceId**](.md)| Organization identifier in scope of which need to perform request (if not specified, the default organization will be used).  It is deprecated. Use servers with &#x60;/organizations/{organizationId}&#x60; base path instead. | [optional]
+ **expand** | **String**| Expand a response to get a full related object included inside of the &#x60;_embedded&#x60; path in the response. It accepts a comma-separated list of objects to expand. See the [expand guide](https://api-reference.rebilly.com/#section/Expand-to-include-embedded-objects) for more info.  | [optional]
 
 ### Return type
 
-[**Array&lt;Invoice&gt;**](Invoice.md)
+[**Invoice**](Invoice.md)
 
 ### Authorization
 
@@ -968,12 +968,12 @@ Name | Type | Description  | Notes
 
 
 
-# **post_upcoming_invoice_issuance**
-> Invoice post_upcoming_invoice_issuance(bodyidinvoice_id, opts)
+# **post_subscription_upcoming_invoice_issuance**
+> Invoice post_subscription_upcoming_invoice_issuance(bodyid, opts)
 
 Issue an upcoming invoice for early pay
 
-Issue an upcoming invoice with specified identifier string for early pay. 
+Issues an upcoming invoice, for a subscription order with a specified ID, for early pay.
 
 ### Example
 ```ruby
@@ -991,17 +991,16 @@ end
 api_instance = RebillySdk::OrdersApi.new
 body = RebillySdk::InvoiceIssue.new # InvoiceIssue | InvoiceIssue resource.
 id = 'id_example' # String | The resource identifier string.
-invoice_id = 'invoice_id_example' # String | The Upcoming Invoice ID.
-opts = { 
+opts = {
   organization_id: RebillySdk::ResourceId.new # ResourceId | Organization identifier in scope of which need to perform request (if not specified, the default organization will be used).  It is deprecated. Use servers with `/organizations/{organizationId}` base path instead.
 }
 
 begin
   #Issue an upcoming invoice for early pay
-  result = api_instance.post_upcoming_invoice_issuance(bodyidinvoice_id, opts)
+  result = api_instance.post_subscription_upcoming_invoice_issuance(bodyid, opts)
   p result
 rescue RebillySdk::ApiError => e
-  puts "Exception when calling OrdersApi->post_upcoming_invoice_issuance: #{e}"
+  puts "Exception when calling OrdersApi->post_subscription_upcoming_invoice_issuance: #{e}"
 end
 ```
 
@@ -1009,10 +1008,9 @@ end
 
 Name | Type | Description  | Notes
 ------------- | ------------- | ------------- | -------------
- **body** | [**InvoiceIssue**](InvoiceIssue.md)| InvoiceIssue resource. | 
- **id** | **String**| The resource identifier string. | 
- **invoice_id** | **String**| The Upcoming Invoice ID. | 
- **organization_id** | [**ResourceId**](.md)| Organization identifier in scope of which need to perform request (if not specified, the default organization will be used).  It is deprecated. Use servers with &#x60;/organizations/{organizationId}&#x60; base path instead. | [optional] 
+ **body** | [**InvoiceIssue**](InvoiceIssue.md)| InvoiceIssue resource. |
+ **id** | **String**| The resource identifier string. |
+ **organization_id** | [**ResourceId**](.md)| Organization identifier in scope of which need to perform request (if not specified, the default organization will be used).  It is deprecated. Use servers with &#x60;/organizations/{organizationId}&#x60; base path instead. | [optional]
 
 ### Return type
 

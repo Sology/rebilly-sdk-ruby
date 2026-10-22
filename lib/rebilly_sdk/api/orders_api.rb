@@ -515,35 +515,35 @@ module RebillySdk
       end
       return data, status_code, headers
     end
-    # Retrieve subscription order's upcoming invoice
-    # Retrieve an upcoming invoice from the specified subscription order. The endpoint is temporary before upcoming invoices get a complete integration. 
+    # Retrieve an upcoming subscription order invoice
+    # Retrieves an upcoming invoice for a specified subscription order. An upcoming invoice is an invoice that has not been issued. It functions as a preview of the next invoice for the order.
     # @param id The resource identifier string.
     # @param [Hash] opts the optional parameters
     # @option opts [ResourceId] :organization_id Organization identifier in scope of which need to perform request (if not specified, the default organization will be used).  It is deprecated. Use servers with &#x60;/organizations/{organizationId}&#x60; base path instead.
-    # @option opts [String] :expand Expand a response to get a full related object included inside of the &#x60;_embedded&#x60; path in the response. It accepts a comma-separated list of objects to expand. See the [expand guide](https://api-reference.rebilly.com/#section/Expand-to-include-embedded-objects) for more info. 
-    # @return [Array<Invoice>]
-    def get_subscription_upcoming_invoice_collection(id, opts = {})
-      data, _status_code, _headers = get_subscription_upcoming_invoice_collection_with_http_info(id, opts)
+    # @option opts [String] :expand Expand a response to get a full related object included inside of the &#x60;_embedded&#x60; path in the response. It accepts a comma-separated list of objects to expand. See the [expand guide](https://api-reference.rebilly.com/#section/Expand-to-include-embedded-objects) for more info.
+    # @return [Invoice]
+    def get_subscription_upcoming_invoice(id, opts = {})
+      data, _status_code, _headers = get_subscription_upcoming_invoice_with_http_info(id, opts)
       data
     end
 
-    # Retrieve subscription order&#x27;s upcoming invoice
-    # Retrieve an upcoming invoice from the specified subscription order. The endpoint is temporary before upcoming invoices get a complete integration. 
+    # Retrieve an upcoming subscription order invoice
+    # Retrieves an upcoming invoice for a specified subscription order. An upcoming invoice is an invoice that has not been issued. It functions as a preview of the next invoice for the order.
     # @param id The resource identifier string.
     # @param [Hash] opts the optional parameters
     # @option opts [ResourceId] :organization_id Organization identifier in scope of which need to perform request (if not specified, the default organization will be used).  It is deprecated. Use servers with &#x60;/organizations/{organizationId}&#x60; base path instead.
-    # @option opts [String] :expand Expand a response to get a full related object included inside of the &#x60;_embedded&#x60; path in the response. It accepts a comma-separated list of objects to expand. See the [expand guide](https://api-reference.rebilly.com/#section/Expand-to-include-embedded-objects) for more info. 
-    # @return [Array<(Array<Invoice>, Integer, Hash)>] Array<Invoice> data, response status code and response headers
-    def get_subscription_upcoming_invoice_collection_with_http_info(id, opts = {})
+    # @option opts [String] :expand Expand a response to get a full related object included inside of the &#x60;_embedded&#x60; path in the response. It accepts a comma-separated list of objects to expand. See the [expand guide](https://api-reference.rebilly.com/#section/Expand-to-include-embedded-objects) for more info.
+    # @return [Array<(Invoice, Integer, Hash)>] Invoice data, response status code and response headers
+    def get_subscription_upcoming_invoice_with_http_info(id, opts = {})
       if @api_client.config.debugging
-        @api_client.config.logger.debug 'Calling API: OrdersApi.get_subscription_upcoming_invoice_collection ...'
+        @api_client.config.logger.debug 'Calling API: OrdersApi.get_subscription_upcoming_invoice ...'
       end
       # verify the required parameter 'id' is set
       if @api_client.config.client_side_validation && id.nil?
-        fail ArgumentError, "Missing the required parameter 'id' when calling OrdersApi.get_subscription_upcoming_invoice_collection"
+        fail ArgumentError, "Missing the required parameter 'id' when calling OrdersApi.get_subscription_upcoming_invoice"
       end
       # resource path
-      local_var_path = '/subscriptions/{id}/upcoming-invoices'.sub('{' + 'id' + '}', id.to_s)
+      local_var_path = '/subscriptions/{id}/upcoming-invoice'.sub('{' + 'id' + '}', id.to_s)
 
       # query parameters
       query_params = opts[:query_params] || {}
@@ -559,9 +559,9 @@ module RebillySdk
       form_params = opts[:form_params] || {}
 
       # http body (model)
-      post_body = opts[:body] 
+      post_body = opts[:body]
 
-      return_type = opts[:return_type] || 'Array<Invoice>' 
+      return_type = opts[:return_type] || 'Invoice'
 
       auth_names = opts[:auth_names] || ['JWT', 'SecretApiKey']
       data, status_code, headers = @api_client.call_api(:GET, local_var_path,
@@ -573,7 +573,7 @@ module RebillySdk
         :return_type => return_type)
 
       if @api_client.config.debugging
-        @api_client.config.logger.debug "API called: OrdersApi#get_subscription_upcoming_invoice_collection\nData: #{data.inspect}\nStatus code: #{status_code}\nHeaders: #{headers}"
+        @api_client.config.logger.debug "API called: OrdersApi#get_subscription_upcoming_invoice\nData: #{data.inspect}\nStatus code: #{status_code}\nHeaders: #{headers}"
       end
       return data, status_code, headers
     end
@@ -1014,44 +1014,38 @@ module RebillySdk
       return data, status_code, headers
     end
     # Issue an upcoming invoice for early pay
-    # Issue an upcoming invoice with specified identifier string for early pay. 
+    # Issues an upcoming invoice, for a subscription order with a specified ID, for early pay.
     # @param body InvoiceIssue resource.
     # @param id The resource identifier string.
-    # @param invoice_id The Upcoming Invoice ID.
     # @param [Hash] opts the optional parameters
     # @option opts [ResourceId] :organization_id Organization identifier in scope of which need to perform request (if not specified, the default organization will be used).  It is deprecated. Use servers with &#x60;/organizations/{organizationId}&#x60; base path instead.
     # @return [Invoice]
-    def post_upcoming_invoice_issuance(body, id, invoice_id, opts = {})
-      data, _status_code, _headers = post_upcoming_invoice_issuance_with_http_info(body, id, invoice_id, opts)
+    def post_subscription_upcoming_invoice_issuance(body, id, opts = {})
+      data, _status_code, _headers = post_subscription_upcoming_invoice_issuance_with_http_info(body, id, opts)
       data
     end
 
     # Issue an upcoming invoice for early pay
-    # Issue an upcoming invoice with specified identifier string for early pay. 
+    # Issues an upcoming invoice, for a subscription order with a specified ID, for early pay.
     # @param body InvoiceIssue resource.
     # @param id The resource identifier string.
-    # @param invoice_id The Upcoming Invoice ID.
     # @param [Hash] opts the optional parameters
     # @option opts [ResourceId] :organization_id Organization identifier in scope of which need to perform request (if not specified, the default organization will be used).  It is deprecated. Use servers with &#x60;/organizations/{organizationId}&#x60; base path instead.
     # @return [Array<(Invoice, Integer, Hash)>] Invoice data, response status code and response headers
-    def post_upcoming_invoice_issuance_with_http_info(body, id, invoice_id, opts = {})
+    def post_subscription_upcoming_invoice_issuance_with_http_info(body, id, opts = {})
       if @api_client.config.debugging
-        @api_client.config.logger.debug 'Calling API: OrdersApi.post_upcoming_invoice_issuance ...'
+        @api_client.config.logger.debug 'Calling API: OrdersApi.post_subscription_upcoming_invoice_issuance ...'
       end
       # verify the required parameter 'body' is set
       if @api_client.config.client_side_validation && body.nil?
-        fail ArgumentError, "Missing the required parameter 'body' when calling OrdersApi.post_upcoming_invoice_issuance"
+        fail ArgumentError, "Missing the required parameter 'body' when calling OrdersApi.post_subscription_upcoming_invoice_issuance"
       end
       # verify the required parameter 'id' is set
       if @api_client.config.client_side_validation && id.nil?
-        fail ArgumentError, "Missing the required parameter 'id' when calling OrdersApi.post_upcoming_invoice_issuance"
-      end
-      # verify the required parameter 'invoice_id' is set
-      if @api_client.config.client_side_validation && invoice_id.nil?
-        fail ArgumentError, "Missing the required parameter 'invoice_id' when calling OrdersApi.post_upcoming_invoice_issuance"
+        fail ArgumentError, "Missing the required parameter 'id' when calling OrdersApi.post_subscription_upcoming_invoice_issuance"
       end
       # resource path
-      local_var_path = '/subscriptions/{id}/upcoming-invoices/{invoiceId}/issue'.sub('{' + 'id' + '}', id.to_s).sub('{' + 'invoiceId' + '}', invoice_id.to_s)
+      local_var_path = '/subscriptions/{id}/upcoming-invoice/issue'.sub('{' + 'id' + '}', id.to_s)
 
       # query parameters
       query_params = opts[:query_params] || {}
@@ -1068,9 +1062,9 @@ module RebillySdk
       form_params = opts[:form_params] || {}
 
       # http body (model)
-      post_body = opts[:body] || @api_client.object_to_http_body(body) 
+      post_body = opts[:body] || @api_client.object_to_http_body(body)
 
-      return_type = opts[:return_type] || 'Invoice' 
+      return_type = opts[:return_type] || 'Invoice'
 
       auth_names = opts[:auth_names] || ['JWT', 'SecretApiKey']
       data, status_code, headers = @api_client.call_api(:POST, local_var_path,
@@ -1082,7 +1076,7 @@ module RebillySdk
         :return_type => return_type)
 
       if @api_client.config.debugging
-        @api_client.config.logger.debug "API called: OrdersApi#post_upcoming_invoice_issuance\nData: #{data.inspect}\nStatus code: #{status_code}\nHeaders: #{headers}"
+        @api_client.config.logger.debug "API called: OrdersApi#post_subscription_upcoming_invoice_issuance\nData: #{data.inspect}\nStatus code: #{status_code}\nHeaders: #{headers}"
       end
       return data, status_code, headers
     end
