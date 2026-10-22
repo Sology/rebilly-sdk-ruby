@@ -2745,11 +2745,11 @@ opts = {
 }
 
 begin
-  #Retrieve subscription order's upcoming invoice
-  result = api_instance.get_subscription_upcoming_invoice_collection(id, opts)
+  #Retrieve an upcoming subscription order invoice
+  result = api_instance.get_subscription_upcoming_invoice(id, opts)
   p result
 rescue RebillySdk::ApiError => e
-  puts "Exception when calling OrdersApi->get_subscription_upcoming_invoice_collection: #{e}"
+  puts "Exception when calling OrdersApi->get_subscription_upcoming_invoice: #{e}"
 end
 # Setup authorization
 RebillySdk.configure do |config|
@@ -2920,17 +2920,16 @@ end
 api_instance = RebillySdk::OrdersApi.new
 body = RebillySdk::InvoiceIssue.new # InvoiceIssue | InvoiceIssue resource.
 id = 'id_example' # String | The resource identifier string.
-invoice_id = 'invoice_id_example' # String | The Upcoming Invoice ID.
 opts = { 
   organization_id: RebillySdk::ResourceId.new # ResourceId | Organization identifier in scope of which need to perform request (if not specified, the default organization will be used).  It is deprecated. Use servers with `/organizations/{organizationId}` base path instead.
 }
 
 begin
   #Issue an upcoming invoice for early pay
-  result = api_instance.post_upcoming_invoice_issuance(body, id, invoice_id, opts)
+  result = api_instance.post_subscription_upcoming_invoice_issuance(body, id, opts)
   p result
 rescue RebillySdk::ApiError => e
-  puts "Exception when calling OrdersApi->post_upcoming_invoice_issuance: #{e}"
+  puts "Exception when calling OrdersApi->post_subscription_upcoming_invoice_issuance: #{e}"
 end
 # Setup authorization
 RebillySdk.configure do |config|
@@ -4487,7 +4486,7 @@ Class | Method | HTTP request | Description
 *RebillySdk::OrdersApi* | [**get_subscription_collection**](docs/OrdersApi.md#get_subscription_collection) | **GET** /subscriptions | Retrieve a list of orders
 *RebillySdk::OrdersApi* | [**get_subscription_reactivation**](docs/OrdersApi.md#get_subscription_reactivation) | **GET** /subscription-reactivations/{id} | Retrieve an order reactivation
 *RebillySdk::OrdersApi* | [**get_subscription_reactivation_collection**](docs/OrdersApi.md#get_subscription_reactivation_collection) | **GET** /subscription-reactivations | Retrieve a list of reactivations
-*RebillySdk::OrdersApi* | [**get_subscription_upcoming_invoice_collection**](docs/OrdersApi.md#get_subscription_upcoming_invoice_collection) | **GET** /subscriptions/{id}/upcoming-invoices | Retrieve subscription order's upcoming invoice
+*RebillySdk::OrdersApi* | [**get_subscription_upcoming_invoice**](docs/OrdersApi.md#get_subscription_upcoming_invoice) | **GET** /subscriptions/{id}/upcoming-invoice | Retrieve an upcoming subscription order invoice
 *RebillySdk::OrdersApi* | [**post_preview_order**](docs/OrdersApi.md#post_preview_order) | **POST** /previews/orders | Preview an order
 *RebillySdk::OrdersApi* | [**post_subscription**](docs/OrdersApi.md#post_subscription) | **POST** /subscriptions | Create an order
 *RebillySdk::OrdersApi* | [**post_subscription_cancellation**](docs/OrdersApi.md#post_subscription_cancellation) | **POST** /subscription-cancellations | Cancel an order
@@ -4495,7 +4494,7 @@ Class | Method | HTTP request | Description
 *RebillySdk::OrdersApi* | [**post_subscription_items_change**](docs/OrdersApi.md#post_subscription_items_change) | **POST** /subscriptions/{id}/change-items | Change an order's items
 *RebillySdk::OrdersApi* | [**post_subscription_reactivation**](docs/OrdersApi.md#post_subscription_reactivation) | **POST** /subscription-reactivations | Reactivate an order
 *RebillySdk::OrdersApi* | [**post_subscription_void**](docs/OrdersApi.md#post_subscription_void) | **POST** /subscriptions/{id}/void | Void an order
-*RebillySdk::OrdersApi* | [**post_upcoming_invoice_issuance**](docs/OrdersApi.md#post_upcoming_invoice_issuance) | **POST** /subscriptions/{id}/upcoming-invoices/{invoiceId}/issue | Issue an upcoming invoice for early pay
+*RebillySdk::OrdersApi* | [**post_subscription_upcoming_invoice_issuance**](docs/OrdersApi.md#post_subscription_upcoming_invoice_issuance) | **POST** /subscriptions/{id}/upcoming-invoice/issue | Issue an upcoming invoice for early pay
 *RebillySdk::OrdersApi* | [**put_subscription**](docs/OrdersApi.md#put_subscription) | **PUT** /subscriptions/{id} | Upsert an order with predefined ID
 *RebillySdk::OrdersApi* | [**put_subscription_cancellation**](docs/OrdersApi.md#put_subscription_cancellation) | **PUT** /subscription-cancellations/{id} | Cancel an order
 *RebillySdk::OrdersTimelineApi* | [**delete_subscription_timeline**](docs/OrdersTimelineApi.md#delete_subscription_timeline) | **DELETE** /subscriptions/{id}/timeline/{messageId} | Delete an Order Timeline message
